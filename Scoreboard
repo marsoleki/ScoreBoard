@@ -1,42 +1,85 @@
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Scoreboard {
-    private List<Match> matches;
+    // Use a map to quickly access matches by team combination
+    private final Map<String, Match> matches;
 
     public Scoreboard() {
-        this.matches = new ArrayList<>();
+        this.matches = new HashMap<>();
     }
 
+    /**
+     * Generates a unique key for the match based on the teams.
+     *
+     * @param homeTeam the name of the home team
+     * @param awayTeam the name of the away team
+     * @return a unique key representing the match
+     */
+    private String generateKey(String homeTeam, String awayTeam) {
+        return homeTeam + " vs " + awayTeam;
+    }
+
+    /**
+     * Starts a new match between the specified home and away teams.
+     *
+     * @param homeTeam the name of the home team
+     * @param awayTeam the name of the away team
+     */
     public void startMatch(String homeTeam, String awayTeam) {
+        String key = generateKey(homeTeam, awayTeam);
         Match match = new Match(homeTeam, awayTeam);
-        matches.add(match);
+        matches.put(key, match);
     }
 
+    /**
+     * Updates the score for the specified match.
+     *
+     * @param homeTeam the name of the home team
+     * @param awayTeam the name of the away team
+     * @param homeScore the new score for the home team
+     * @param awayScore the new score for the away team
+     */
     public void updateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) {
-        for (Match match : matches) {
-            if (match.getHomeTeam().equals(homeTeam) && match.getAwayTeam().equals(awayTeam)) {
-                match.updateScore(homeScore, awayScore);
-                break;
-            }
+        String key = generateKey(homeTeam, awayTeam);
+        Match match = matches.get(key);
+        if (match != null) {
+            match.updateScore(homeScore, awayScore);
         }
     }
 
+    /**
+     * Finishes the specified match by removing it from the scoreboard.
+     *
+     * @param homeTeam the name of the home team
+     * @param awayTeam the name of the away team
+     */
     public void finishMatch(String homeTeam, String awayTeam) {
-        matches.removeIf(match -> match.getHomeTeam().equals(homeTeam) && match.getAwayTeam().equals(awayTeam));
+        String key = generateKey(homeTeam, awayTeam);
+        matches.remove(key);
     }
 
+    /**
+     * Retrieves a summary of all matches, sorted by total score and start time.
+     *
+     * @return a list of matches sorted by total score and start time
+     */
     public List<Match> getSummary() {
-        matches.sort((m1, m2) -> {
+        List<Match> matchList = new ArrayList<>(matches.values());
+        matchList.sort((m1, m2) -> {
             int totalScore1 = m1.getHomeScore() + m1.getAwayScore();
             int totalScore2 = m2.getHomeScore() + m2.getAwayScore();
             if (totalScore1 != totalScore2) {
                 return Integer.compare(totalScore2, totalScore1); // Descending by total score
             }
-            return Long.compare(m2.getStartTime(), m1.getStartTime()); // Descending by start time
+            return m2.getStartTime().compareTo(m1.getStartTime()); // Descending by start time
         });
-        return matches;
+        return matchList;
     }
 
+    /**
+     * Displays a summary of all matches in the console.
+     */
     public void displaySummary() {
         List<Match> summary = getSummary();
         for (Match match : summary) {
@@ -44,3 +87,19 @@ public class Scoreboard {
         }
     }
 }
+
+/**
+* Data Structure Optimization: We use a Map<String, Match> to store the matches, which allows for quick access and updates using a unique key generated from the team names.
+* 
+* generateKey Method: Generates a unique key for each match based on the teams involved, simplifying retrieval and updates.
+* 
+* startMatch Method: Adds a new match to the map.
+* 
+* updateScore Method: Retrieves the match using the key and updates the score.
+* 
+* finishMatch Method: Removes the match from the map.
+* 
+* getSummary Method: Collects all matches, sorts them by total score and start time, and returns a sorted list.
+* 
+* displaySummary Method: Prints the match summaries to the console.
+*/
