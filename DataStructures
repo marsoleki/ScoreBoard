@@ -1,27 +1,86 @@
-public class Match {
-    private String homeTeam;
-    private String awayTeam;
-    private int homeScore;
-    private int awayScore;
-    private long startTime;
+import java.time.LocalDateTime;
 
+/**
+ * The Match class represents a football match between two teams.
+ * It contains information about the teams, their scores, and the start time of the match.
+ */
+public class Match {
+    // The name of the home team
+    private final String homeTeam;
+    
+    // The name of the away team
+    private final String awayTeam;
+    
+    // The score of the home team
+    private int homeScore;
+    
+    // The score of the away team
+    private int awayScore;
+    
+    // The start time of the match
+    private final LocalDateTime startTime;
+
+    /**
+     * Constructor to initialize a Match object with the given home and away teams.
+     * Initializes the scores to 0 and records the start time.
+     *
+     * @param homeTeam the name of the home team
+     * @param awayTeam the name of the away team
+     */
     public Match(String homeTeam, String awayTeam) {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.homeScore = 0;
         this.awayScore = 0;
-        this.startTime = System.currentTimeMillis();
+        this.startTime = LocalDateTime.now(); // Record the start time of the match
     }
 
-    // Getters and setters for each field
-    public String getHomeTeam() { return homeTeam; }
-    public String getAwayTeam() { return awayTeam; }
-    public int getHomeScore() { return homeScore; }
-    public int getAwayScore() { return awayScore; }
-    public long getStartTime() { return startTime; }
+    // Getter method for the home team name
+    public String getHomeTeam() { 
+        return homeTeam; 
+    }
 
+    // Getter method for the away team name
+    public String getAwayTeam() { 
+        return awayTeam; 
+    }
+
+    // Getter method for the home team score
+    public int getHomeScore() { 
+        return homeScore; 
+    }
+
+    // Getter method for the away team score
+    public int getAwayScore() { 
+        return awayScore; 
+    }
+
+    // Getter method for the start time of the match
+    public LocalDateTime getStartTime() { 
+        return startTime; 
+    }
+
+    /**
+     * Method to update the scores of the home and away teams.
+     *
+     * @param homeScore the new score for the home team
+     * @param awayScore the new score for the away team
+     */
     public void updateScore(int homeScore, int awayScore) {
         this.homeScore = homeScore;
         this.awayScore = awayScore;
     }
 }
+
+/**
+* Explanation:
+* Class-Level Comments: Describes the purpose of the Match class and what it represents.
+* 
+* Field-Level Comments: Explains what each field in the class is used for.
+* 
+* Constructor Comment: Describes the purpose of the constructor and what parameters it takes.
+* 
+* Getter Method Comments: Briefly explains what each getter method returns.
+* 
+* updateScore Method Comment: Describes the purpose of the updateScore method and what parameters it takes.
+*/
