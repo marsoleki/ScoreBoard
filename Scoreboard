@@ -1,0 +1,46 @@
+import java.util.*;
+
+public class Scoreboard {
+    private List<Match> matches;
+
+    public Scoreboard() {
+        this.matches = new ArrayList<>();
+    }
+
+    public void startMatch(String homeTeam, String awayTeam) {
+        Match match = new Match(homeTeam, awayTeam);
+        matches.add(match);
+    }
+
+    public void updateScore(String homeTeam, String awayTeam, int homeScore, int awayScore) {
+        for (Match match : matches) {
+            if (match.getHomeTeam().equals(homeTeam) && match.getAwayTeam().equals(awayTeam)) {
+                match.updateScore(homeScore, awayScore);
+                break;
+            }
+        }
+    }
+
+    public void finishMatch(String homeTeam, String awayTeam) {
+        matches.removeIf(match -> match.getHomeTeam().equals(homeTeam) && match.getAwayTeam().equals(awayTeam));
+    }
+
+    public List<Match> getSummary() {
+        matches.sort((m1, m2) -> {
+            int totalScore1 = m1.getHomeScore() + m1.getAwayScore();
+            int totalScore2 = m2.getHomeScore() + m2.getAwayScore();
+            if (totalScore1 != totalScore2) {
+                return Integer.compare(totalScore2, totalScore1); // Descending by total score
+            }
+            return Long.compare(m2.getStartTime(), m1.getStartTime()); // Descending by start time
+        });
+        return matches;
+    }
+
+    public void displaySummary() {
+        List<Match> summary = getSummary();
+        for (Match match : summary) {
+            System.out.println(match.getHomeTeam() + " " + match.getHomeScore() + " - " + match.getAwayScore() + " " + match.getAwayTeam());
+        }
+    }
+}
