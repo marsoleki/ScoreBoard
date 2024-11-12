@@ -1,0 +1,39 @@
+public class Main {
+    public static void main(String[] args) {
+        // Initialize the scoreboard
+        Scoreboard scoreboard = new Scoreboard();
+        
+        // Start matches
+        scoreboard.startMatch("Mexico", "Canada");
+        scoreboard.startMatch("Spain", "Brazil");
+        scoreboard.startMatch("Germany", "France");
+        scoreboard.startMatch("Uruguay", "Italy");
+        scoreboard.startMatch("Argentina", "Australia");
+
+        // Update scores
+        scoreboard.updateScore("Mexico", "Canada", 0, 5);
+        scoreboard.updateScore("Spain", "Brazil", 10, 2);
+        scoreboard.updateScore("Germany", "France", 2, 2);
+        scoreboard.updateScore("Uruguay", "Italy", 6, 6);
+        scoreboard.updateScore("Argentina", "Australia", 3, 1);
+
+        // Display the summary of all matches
+        scoreboard.displaySummary();
+    }
+}
+
+/**
+* Data Structure Optimization: We use a Map<String, Match> to store the matches, which allows for quick access and updates using a unique key generated from the team names.
+* 
+* generateKey Method: Generates a unique key for each match based on the teams involved, simplifying retrieval and updates.
+* 
+* startMatch Method: Adds a new match to the map.
+* 
+* updateScore Method: Retrieves the match using the key and updates the score.
+* 
+* finishMatch Method: Removes the match from the map.
+* 
+* getSummary Method: Collects all matches, sorts them by total score and start time, and returns a sorted list.
+* 
+* displaySummary Method: Prints the match summaries to the console.
+*/
